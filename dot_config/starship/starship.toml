@@ -1,0 +1,24 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Extend the default format config: https://starship.rs/config/#default-prompt-format
+#format="""
+#...
+#${custom.jj}\
+#...
+#"""
+
+# Inserts a blank line between shell prompts
+add_newline = false
+
+[python]
+symbol = " "
+
+
+[custom.jj]
+command = "prompt"
+format = "$output"
+ignore_timeout = true
+shell = ["starship-jj", "--ignore-working-copy", "starship"]
+use_stdin = false
+when = true

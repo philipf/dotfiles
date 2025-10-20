@@ -57,7 +57,7 @@ bindkey '^[[3~' delete-char
 eval "$(starship init zsh)"
 
 # Sets an environment variable to specify the path to the Starship configuration file. This tells Starship where to find its customization settings.
-export STARSHIP_CONFIG=~/.config/starship.toml
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 export EDITOR=/usr/bin/nvim
 
