@@ -1,6 +1,8 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
 
+vim.opt.swapfile = false
+
 vim.keymap.set("n", "<C-`>", function()
   -- vim.keymap.set("n", "<space>st", function()
   vim.cmd.new()
