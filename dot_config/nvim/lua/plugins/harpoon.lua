@@ -30,7 +30,7 @@ return {
     -- `<leader>a` and control keys to better integrate with LazyVim conventions.
 
     -- Add the current file to the harpoon list
-    vim.keymap.set("n", "hh", function()
+    vim.keymap.set("n", "hg", function()
       harpoon:list():add()
     end, { desc = "Harpoon: Add File" })
 
