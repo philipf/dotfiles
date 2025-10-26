@@ -37,3 +37,9 @@ require("mason").setup({
     -- "prettier",
   },
 })
+
+require("neotest").setup({
+  adapters = {
+    require("neotest-dotnet"),
+  },
+})
