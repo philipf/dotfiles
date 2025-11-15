@@ -24,7 +24,7 @@ keybind = ctrl+space>8=goto_tab:8
 keybind = ctrl+space>9=goto_tab:9
 
 
-keybind = ctrl+h=goto_split:left
-keybind = ctrl+l=goto_split:right
-keybind = ctrl+j=goto_split:down
-keybind = ctrl+k=goto_split:up
+keybind = ctrl+space>h=goto_split:left
+keybind = ctrl+space>l=goto_split:right
+keybind = ctrl+space>j=goto_split:down
+keybind = ctrl+space>k=goto_split:up
