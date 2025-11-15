@@ -16,6 +16,8 @@ return {
   ---@module 'obsidian'
   ---@type obsidian.config
   opts = {
+    legacy_commands = false,
+    ui = { enable = false },
     workspaces = {
       {
         name = "personal",
@@ -38,5 +40,8 @@ return {
     attachments = {
       img_folder = "Attachments",
     },
+    note_id_func = function(title)
+      return (title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""))
+    end,
   },
 }
