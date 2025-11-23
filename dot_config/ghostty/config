@@ -8,9 +8,8 @@ copy-on-select=clipboard
 
 keybind = shift+enter=text:\x1b\r
 
-
-keybind = ctrl+space>\=new_split:right
-keybind = ctrl+space>shift+\=new_split:right
+keybind = ctrl+space>|=new_split:right
+keybind = ctrl+space>/=new_split:right
 keybind = ctrl+space>-=new_split:down
 keybind = ctrl+space>e=prompt_surface_title
 keybind = ctrl+space>1=goto_tab:1
@@ -31,3 +30,7 @@ keybind = ctrl+space>k=goto_split:up
 
 # Slowdown mouse scrolling
 mouse-scroll-multiplier = 0.95
+
+
+command = /usr/bin/zsh -l -i
+font-size = 13
