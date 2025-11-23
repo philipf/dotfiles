@@ -28,3 +28,6 @@ keybind = ctrl+space>h=goto_split:left
 keybind = ctrl+space>l=goto_split:right
 keybind = ctrl+space>j=goto_split:down
 keybind = ctrl+space>k=goto_split:up
+
+# Slowdown mouse scrolling
+mouse-scroll-multiplier = 0.95
