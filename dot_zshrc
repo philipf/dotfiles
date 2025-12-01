@@ -136,3 +136,12 @@ export NVM_DIR="$HOME/.nvm"
 eval "$(/home/philipf/.local/bin/mise activate zsh)" # added by https://mise.run/zsh
 
 . "$HOME/.local/share/../bin/env"
+
+# Convenience Yazi function that will exit into current selected dir
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
