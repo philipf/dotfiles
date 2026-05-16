@@ -111,7 +111,7 @@ export SAVEHIST=$HISTSIZE
 source <(COMPLETE=zsh jj)
 
 export SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs
-export DOCKER_HOST="unix:///run/user/$(id -u)/podman/podman.sock"
+# export DOCKER_HOST="unix:///run/user/$(id -u)/podman/podman.sock"
 
 # pnpm
 export PNPM_HOME="/home/philipf/.local/share/pnpm"
@@ -133,8 +133,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-eval "$(/home/philipf/.local/bin/mise activate zsh)" # added by https://mise.run/zsh
-
 . "$HOME/.local/share/../bin/env"
 
 # Convenience Yazi function that will exit into current selected dir
@@ -145,3 +143,4 @@ function y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+eval "$(mise activate zsh)"
