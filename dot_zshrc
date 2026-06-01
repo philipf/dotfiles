@@ -59,7 +59,7 @@ eval "$(starship init zsh)"
 # Sets an environment variable to specify the path to the Starship configuration file. This tells Starship where to find its customization settings.
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
-export EDITOR=/usr/bin/nvim
+export EDITOR=nvim
 
 
 alias la=tree
@@ -76,9 +76,7 @@ source <(fzf --zsh)
 
 
 # NVIM
-alias v="/usr/bin/nvim"
-alias vim="/usr/bin/nvim"
-alias vi="/usr/bin/nvim"
+alias v="nvim"
 
 alias lg="lazygit"
 
