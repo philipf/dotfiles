@@ -31,9 +31,11 @@
 	email = philip.fourie@gmail.com
 [core]
 	editor = nvim
+{{ if ne .chezmoi.hostname "F5-LAPTOP-2764" -}}
 [credential "https://github.com"]
-	helper = 
+	helper =
 	helper = !/usr/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
+	helper =
 	helper = !/usr/bin/gh auth git-credential
+{{ end -}}
