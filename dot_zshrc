@@ -66,9 +66,8 @@ alias la=tree
 alias cat=bat
 
 # Eza
-alias l="eza -l --icons --git -a"
-alias lt="eza --tree --level=2 --long --icons --git"
-alias ltree="eza --tree --level=2  --icons --git"
+alias l="eza -l --icons --git -a  --group-directories-first"
+alias lt="eza --tree --level=2 --long --icons --git --group-directories-first"
 
 # fzf
 # Set up fzf key bindings and fuzzy completion
@@ -82,6 +81,9 @@ alias vim="/usr/bin/nvim"
 alias vi="/usr/bin/nvim"
 
 alias lg="lazygit"
+
+alias weather="curl wttr.in/Churton+Park,Wellington"
+alias wttr="curl wttr.in/Churton+Park,Wellington"
 
 # ZOXIDE
 eval "$(zoxide init zsh)"

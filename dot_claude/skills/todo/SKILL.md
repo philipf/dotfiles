@@ -19,18 +19,24 @@ Use the description exactly as provided — do not rephrase or reformat it.
 ## Long description (more than 10 words)
 
 1. Summarise the description into a short title (3–6 words, title-case)
-2. Create a new markdown note at `~/SecondBrain/Notes/<title>.md` using this exact template:
+2. Create a new markdown note at `~/SecondBrain/_GTD/<title>.md` using this exact template:
 
 ```
 ---
-created: <YYYY-MM-DD HH:MM>
-type: note
-tags: ['']
-aliases: ['']
+type: kanban
+created: {{ .CreatedAt.Format "2006-01-02 15:04" }}
+updated: {{ .UpdatedAt.Format "2006-01-02 15:04" }}
+status: {{.Status}}
+channel: {{.Channel}}
+externalId: {{.ExternalID}}
 ---
-# <title>
 
-<full description as provided by the user>
+# {{.Title}}
+{{.Description}}
+
+## Notes
+<break down into logical steps to action>
+- [ ] Step 1]
 
 ```
 
