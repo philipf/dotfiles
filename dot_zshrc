@@ -83,8 +83,7 @@ alias lg="lazygit"
 alias weather="curl wttr.in/Churton+Park,Wellington"
 alias wttr="curl wttr.in/Churton+Park,Wellington"
 
-# ZOXIDE
-eval "$(zoxide init zsh)"
+# ZOXIDE (must be after cd alias and mise — zoxide doctor enforces this)
 alias cd="z"
 
 # GO
@@ -145,3 +144,4 @@ function y() {
 }
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise activate zsh)"
+eval "$(zoxide init zsh)"
