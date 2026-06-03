@@ -1,3 +1,4 @@
+-- Sample commented added to test Claude skill
 return {
   {
     "stevearc/oil.nvim",
