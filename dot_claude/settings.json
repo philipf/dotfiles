@@ -19,6 +19,5 @@
   "effortLevel": "high",
   "theme": "dark",
   "autoCompactEnabled": false,
-  "skipAutoPermissionPrompt": true,
-  "model": "opus[1m]"
+  "skipAutoPermissionPrompt": true
 }
