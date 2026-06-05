@@ -53,6 +53,15 @@ bindkey '\e[F' end-of-line
 # Deletes the character under the cursor (Standard Delete key code)
 bindkey '^[[3~' delete-char
 
+## Enable full-text editor 
+# Load the edit-command-line module
+autoload -Uz edit-command-line
+zle -N edit-command-line
+
+# Bind the widget to Ctrl+X, Ctrl+E
+bindkey '^Xe' edit-command-line
+bindkey '^X^e' edit-command-line
+
 # Initializes the Starship prompt (a fast, customizable prompt for the shell). The eval executes the shell setup script that starship init zsh outputs, integrating the prompt with Zsh.
 eval "$(starship init zsh)"
 
@@ -72,15 +81,7 @@ alias lt="eza --tree --level=2 --long --icons --git --group-directories-first"
 # CD shortcuts
 alias ..="cd .."
 
-# fzf
-# Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
-
-
-
-# NVIM
 alias v="nvim"
-
 alias lg="lazygit"
 
 alias weather="curl wttr.in/Churton+Park,Wellington"
@@ -88,6 +89,10 @@ alias wttr="curl wttr.in/Churton+Park,Wellington"
 
 # ZOXIDE (must be after cd alias and mise — zoxide doctor enforces this)
 alias cd="z"
+
+# fzf
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
 
 # GO
 export GOROOT=/usr/lib/golang
@@ -106,10 +111,6 @@ export HISTSIZE=100000
 export HISTFILE=~/.zsh_history
 export SAVEHIST=$HISTSIZE
 
-# . "$HOME/.atuin/bin/env"
-
-# eval "$(atuin init zsh --disable-up-arrow)"
-#eval "$(atuin init zsh )"
 source <(COMPLETE=zsh jj)
 
 export SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs
@@ -122,14 +123,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
-
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
-}
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -145,7 +138,9 @@ function y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.dotnet/tools:$PATH"
+
 eval "$(mise activate zsh)"
 eval "$(zoxide init zsh)"
