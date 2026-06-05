@@ -1,11 +1,15 @@
 customCommands:
-  - key: "<c-g>"
+  - key: <c-g>
     context: localBranches
-    command: "git log --oneline --no-merges {{.CheckedOutBranch.Name}}..{{.SelectedLocalBranch.Name}}"
-    description: "PR-style commit delta: selected branch vs current"
+    command: git log --oneline --no-merges {{.CheckedOutBranch.Name}}..{{.SelectedLocalBranch.Name}}
+    description: 'PR-style commit delta: selected branch vs current'
     output: popup
-  - key: "<c-b>"
+  - key: <c-b>
     context: localBranches
-    command: "git merge-base {{.CheckedOutBranch.Name}} {{.SelectedLocalBranch.Name}}"
-    description: "merge-base of current and selected branch"
+    command: git merge-base {{.CheckedOutBranch.Name}} {{.SelectedLocalBranch.Name}}
+    description: merge-base of current and selected branch
     output: popup
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never --line-numbers
