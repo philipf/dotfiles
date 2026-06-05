@@ -26,7 +26,9 @@
       "Bash(qalc -defaults \"1 USD to EUR\")",
       "Bash(qalc -defaults \"0xFF to decimal\")",
       "Bash(qalc -terse -defaults \"100 km to miles\")",
-      "Bash(qalc *)"
+      "Bash(qalc *)",
+      "Bash(bash *)",
+      "Bash(chezmoi re-add *)"
     ]
   }
 }
