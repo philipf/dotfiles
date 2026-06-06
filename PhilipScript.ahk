@@ -318,7 +318,7 @@ GoToRelativeDesktop(offset) {
       return
     ; Translate C:\foo\bar -> /mnt/c/foo/bar for WSL
     wslPath := StrReplace(RegExReplace(item.Path, "^(\w):\\", "/mnt/$L1/"), "\", "/")
-    Run('wt.exe wsl -e /home/philipf/.local/share/mise/installs/neovim/latest/bin/nvim "' wslPath '"')
+    Run('wt.exe wsl -e /home/philipf/.local/share/mise/installs/neovim/latest/bin/nvim "' wslPath '"', , "Max")
     return
   }
 }
