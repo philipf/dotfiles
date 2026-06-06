@@ -23,14 +23,8 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Add vi mode to terminal
 bindkey -v
 
-# Binds Ctrl+w to immediately execute the currently suggested command.
-bindkey '^w' autosuggest-execute
-
 # Binds Ctrl+e to accept the currently suggested command up to the end of the line.
 bindkey '^e' autosuggest-accept
-
-# Binds Ctrl+u to toggle the autosuggestions feature on or off.
-bindkey '^u' autosuggest-toggle
 
 # Binds Ctrl+L to the vi-forward-word command, which moves the cursor forward to the beginning of the next word (this is a common VI-mode binding).
 #bindkey '^L' vi-forward-word
@@ -42,20 +36,42 @@ bindkey '^k' up-line-or-search
 bindkey '^j' down-line-or-search
 
 
-# 1. Word Jumps (Control-Arrow Keys - Replace with your key codes)
-# '\e[1;5D' is a common code for Ctrl-Left
-bindkey '\e[1;5D' backward-word
-# '\e[1;5C' is a common code for Ctrl-Right
-bindkey '\e[1;5C' forward-word
+# Navigation keys — bound via terminfo so the correct sequence is used in
+# every terminal (tmux sends \e[1~/\e[4~ for Home/End, Ghostty/Alacritty send
+# \e[H/\e[F), and bound in both insert (viins) and normal (vicmd) mode so they
+# work after pressing Esc instead of misparsing as vi commands.
+zmodload zsh/terminfo
+# Terminals only guarantee the terminfo sequences while keypad-transmit mode is
+# on, so enable it whenever the line editor is active.
+if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
+  zle-line-init() { echoti smkx }
+  zle-line-finish() { echoti rmkx }
+  zle -N zle-line-init
+  zle -N zle-line-finish
+fi
 
-# 2. Line Jumps (Home and End Keys - Replace with your key codes)
-# '\e[H' is a common code for Home
-bindkey '\e[H' beginning-of-line
-# '\e[F' is a common code for End
-bindkey '\e[F' end-of-line
+typeset -A nav_keys=(
+  khome beginning-of-line     # Home
+  kend  end-of-line           # End
+  kdch1 delete-char           # Delete
+  kich1 overwrite-mode        # Insert
+  kpp   up-line-or-history    # PageUp
+  knp   down-line-or-history  # PageDown
+)
+for cap widget in ${(kv)nav_keys}; do
+  [[ -n $terminfo[$cap] ]] || continue
+  bindkey -M viins "$terminfo[$cap]" $widget
+  bindkey -M vicmd "$terminfo[$cap]" $widget
+done
+unset nav_keys
 
-# Deletes the character under the cursor (Standard Delete key code)
-bindkey '^[[3~' delete-char
+# Ctrl-Left/Right word jumps (xterm-style sequence, identical in
+# tmux/Ghostty/Alacritty so safe to hardcode)
+for m in viins vicmd; do
+  bindkey -M $m '\e[1;5D' backward-word
+  bindkey -M $m '\e[1;5C' forward-word
+done
+unset m
 
 ## Enable full-text editor 
 # Load the edit-command-line module
