@@ -25,17 +25,19 @@ From its output, render:
 2. A table:
 
 | File | What changed | Source | Git | vs GitHub | Suggestion |
-|------|--------------|--------|-----|-----------|------------|
+| ---- | ------------ | ------ | --- | --------- | ---------- |
 
 **Diff direction — read carefully:** the script runs `chezmoi diff --reverse`, so in the "home vs source" diff section `+` lines are the current HOME file (the user's local edits) and `-` lines are the SOURCE state. Describe local edits from the `+` lines. (Plain `chezmoi diff` is apply-direction, the opposite — never use it for describing local edits.) For incoming changes the "incoming from GitHub" git diff is normal direction: `+` = what pull/apply would bring in.
 
 Column semantics:
+
 - **What changed** — a one-sentence description you write from the diff sections, respecting the diff direction above.
 - **Source** — home vs source dir: `modified` (home edited since last apply — chezmoi status col 1), `apply pending` (source ahead of home — col 2), or `in sync`.
 - **Git** — `modified` if the file has uncommitted changes in the source dir, else `clean`.
 - **vs GitHub** — `ahead ↑` (in an outgoing commit), `behind ↓` (in an incoming commit), or `in sync`.
 
 Suggestion rules:
+
 - home modified, GitHub untouched → `re-add → commit`
 - changed on GitHub, home untouched → `pull → apply`
 - changed on both sides → `conflict`
@@ -47,18 +49,16 @@ Roll incoming/outgoing commits that touch a file into that file's row; if the br
 
 ## Phase 2 — Decide
 
-Only after the summary line and table have been shown (see hard gate above), ask via AskUserQuestion: **"Proceed with sync plan?"** — options: *Apply all suggestions* / *Let me pick* / *Abort*.
+Only after the summary line and table have been shown (see hard gate above), ask via AskUserQuestion: **"Proceed with sync plan?"** — options: _Apply all suggestions_ / _Let me pick_ / _Abort_.
 
 **Embed the report in the question** — text rendered in the same turn as the question dialog can fail to display, so the dialog must be self-sufficient:
-- Put the summary counts in the question text itself, e.g. `Proceed with sync plan? (2 to push up · 0 to pull down · 0 conflicts)`
-- Give EVERY option a `preview` containing the full report table (markdown), so the plan is visible inside the dialog no matter which option is focused.
-- Use option descriptions for per-file one-liners when they fit.
 
-- *Let me pick* → one multiSelect checklist per action group (re-add these / apply these / etc.).
+- _Let me pick_ → one multiSelect checklist per action group (re-add these / apply these / etc.).
 - If no new files were passed as args, ask conversationally whether there are new files to `chezmoi add` only when it seems relevant — don't block the fast path.
 
-**Conflicts** (changed both locally and on GitHub, or `MM` divergence): one question per file, showing both diffs first — options: *Merge both* / *Keep local* / *Take remote* / *Skip*.
-- *Merge both* = you edit the source file to combine both changes, show the result, and continue. If the merge is too tangled, suggest the user run `! chezmoi merge <file>` themselves.
+**Conflicts** (changed both locally and on GitHub, or `MM` divergence): one question per file, showing both diffs first — options: _Merge both_ / _Keep local_ / _Take remote_ / _Skip_.
+
+- _Merge both_ = you edit the source file to combine both changes, show the result, and continue. If the merge is too tangled, suggest the user run `! chezmoi merge <file>` themselves.
 
 **Template guard:** NEVER `chezmoi re-add` a file whose source is `*.tmpl` — re-add silently replaces the template with this machine's rendered output. Offer `chezmoi merge` or edit the `.tmpl` source directly instead.
 
