@@ -1,3 +1,4 @@
+---
 customCommands:
   - key: <c-g>
     context: localBranches
@@ -13,3 +14,4 @@ git:
   pagers:
     - colorArg: always
       pager: delta --dark --paging=never --line-numbers
+promptToReturnFromSubprocess: false
