@@ -292,6 +292,38 @@ GoToRelativeDesktop(offset) {
   Return
 }
 
+; Ctrl + G (Windows Explorer only), open the selected file in WSL nvim
+; Queries Explorer's selection via COM (no clipboard involved).
+#HotIf WinActive("ahk_class CabinetWClass")
+^g::
+{
+  hwnd := WinExist("A")
+  activeTab := 0
+  try activeTab := ControlGetHwnd("ShellTabWindowClass1", hwnd)  ; Win11 tabs; absent on Win10
+
+  for w in ComObject("Shell.Application").Windows {
+    if (w.HWND != hwnd)
+      continue
+    if activeTab {  ; match the active tab, not just the window
+      shellBrowser := ComObjQuery(w, "{4C96BE40-915C-11CF-99D3-00AA004AE837}", "{000214E2-0000-0000-C000-000000000046}")
+      ComCall(3, shellBrowser, "uint*", &thisTab := 0)
+      if (thisTab != activeTab)
+        continue
+    }
+    items := w.Document.SelectedItems()
+    if (items.Count = 0)
+      return
+    item := items.Item(0)
+    if item.IsFolder
+      return
+    ; Translate C:\foo\bar -> /mnt/c/foo/bar for WSL
+    wslPath := StrReplace(RegExReplace(item.Path, "^(\w):\\", "/mnt/$L1/"), "\", "/")
+    Run('wt.exe wsl -e nvim "' wslPath '"')
+    return
+  }
+}
+#HotIf
+
 ; Clear console log with Ctrl+L and exit it with Ctrl+D
 ; -----------------------------------------------------------------------------
 <^l::
