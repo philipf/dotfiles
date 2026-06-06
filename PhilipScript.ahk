@@ -323,7 +323,8 @@ GoToRelativeDesktop(offset) {
     ; doesn't inherit foreground rights. Snapshot existing WT windows, then
     ; activate whichever new one appears.
     wtBefore := WinGetList("ahk_class CASCADIA_HOSTING_WINDOW_CLASS")
-    Run('wt.exe wsl -e /home/philipf/.local/share/mise/installs/neovim/latest/bin/nvim "' wslPath '"', , "Max")
+    SplitPath(item.Path, &fileName)
+    Run('wt.exe new-tab --title "' fileName '" --suppressApplicationTitle wsl -e /home/philipf/.local/share/mise/installs/neovim/latest/bin/nvim "' wslPath '"', , "Max")
     ; Wait for the WT window itself, not WSL startup (which happens inside it);
     ; generous deadline only matters on a cold start of Windows Terminal.
     deadline := A_TickCount + 10000
