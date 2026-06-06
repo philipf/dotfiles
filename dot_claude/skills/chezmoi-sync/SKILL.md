@@ -25,8 +25,10 @@ From its output, render:
 | File | What changed | Source | Git | vs GitHub | Suggestion |
 |------|--------------|--------|-----|-----------|------------|
 
+**Diff direction — read carefully:** the script runs `chezmoi diff --reverse`, so in the "home vs source" diff section `+` lines are the current HOME file (the user's local edits) and `-` lines are the SOURCE state. Describe local edits from the `+` lines. (Plain `chezmoi diff` is apply-direction, the opposite — never use it for describing local edits.) For incoming changes the "incoming from GitHub" git diff is normal direction: `+` = what pull/apply would bring in.
+
 Column semantics:
-- **What changed** — a one-sentence description you write from the diff sections.
+- **What changed** — a one-sentence description you write from the diff sections, respecting the diff direction above.
 - **Source** — home vs source dir: `modified` (home edited since last apply — chezmoi status col 1), `apply pending` (source ahead of home — col 2), or `in sync`.
 - **Git** — `modified` if the file has uncommitted changes in the source dir, else `clean`.
 - **vs GitHub** — `ahead ↑` (in an outgoing commit), `behind ↓` (in an incoming commit), or `in sync`.

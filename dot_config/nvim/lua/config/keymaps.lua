@@ -58,5 +58,6 @@ map(
 )
 
 -- For consitency with ghostty, also map / for splitting
-map("n", "<leader>/", "<C-W>v", { desc = "Split Window Right" })
--- map("n", "<leader>/", "<C-W>v", { desc = "Split Window Right", remap = true })
+-- map("n", "<leader>/", "<C-W>v", { desc = "Split Window Right" })
+map("n", "<leader>%", "<C-W>v", { desc = "Split Window Right", remap = true })
+map("n", '<leader>"', "<C-W>s", { desc = "Split Window Down", remap = true })

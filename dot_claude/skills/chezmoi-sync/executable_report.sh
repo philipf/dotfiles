@@ -35,8 +35,8 @@ git -C "$SRC" log --oneline "$UPSTREAM..$BRANCH"
 section "INCOMING COMMITS (on GitHub, not local)"
 git -C "$SRC" log --oneline "$BRANCH..$UPSTREAM"
 
-section "DIFF: source vs home (what 'chezmoi apply' would change; reversed = local edits)"
-chezmoi diff 2>/dev/null | head -400
+section "DIFF: home vs source (+ lines = current HOME content = local edits; - lines = SOURCE state)"
+chezmoi diff --reverse 2>/dev/null | head -400
 
 section "DIFF: uncommitted source changes"
 git -C "$SRC" diff HEAD | head -400
