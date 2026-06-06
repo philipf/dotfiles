@@ -7,6 +7,8 @@ description: Report and sync chezmoi-managed dotfiles between this machine, the 
 
 Three-phase sync: **report → decide → sync**. Never skip the report phase, and never run sync actions the user hasn't selected.
 
+**Hard gate:** the rendered report (summary line + table from Phase 1) MUST appear as visible output to the user BEFORE any AskUserQuestion call. This holds even when the plan seems obvious, the user pre-named the files to sync, or there is only one change — the user decides from the interpreted report, not from raw script output or your internal reading of it.
+
 If the user passed arguments naming files (e.g. `add ~/.config/foo`), treat those as new files to `chezmoi add` in Phase 3.
 
 ## Phase 1 — Report
@@ -45,7 +47,12 @@ Roll incoming/outgoing commits that touch a file into that file's row; if the br
 
 ## Phase 2 — Decide
 
-Ask via AskUserQuestion: **"Proceed with sync plan?"** — options: *Apply all suggestions* / *Let me pick* / *Abort*.
+Only after the summary line and table have been shown (see hard gate above), ask via AskUserQuestion: **"Proceed with sync plan?"** — options: *Apply all suggestions* / *Let me pick* / *Abort*.
+
+**Embed the report in the question** — text rendered in the same turn as the question dialog can fail to display, so the dialog must be self-sufficient:
+- Put the summary counts in the question text itself, e.g. `Proceed with sync plan? (2 to push up · 0 to pull down · 0 conflicts)`
+- Give EVERY option a `preview` containing the full report table (markdown), so the plan is visible inside the dialog no matter which option is focused.
+- Use option descriptions for per-file one-liners when they fit.
 
 - *Let me pick* → one multiSelect checklist per action group (re-add these / apply these / etc.).
 - If no new files were passed as args, ask conversationally whether there are new files to `chezmoi add` only when it seems relevant — don't block the fast path.
