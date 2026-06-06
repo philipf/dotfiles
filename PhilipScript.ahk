@@ -249,16 +249,11 @@ GoToRelativeDesktop(offset) {
   Run(exe)
 }
 
-; Windows + Enter, open Windows Terminal
+; Windows + Enter or Ctrl + Alt + T, open Windows Terminal
 #Enter::
-{
-  Run("wt.exe")
-}
-
-; Control + Alt + T, open Windows Terminal (alternative)
 ^!t::
 {
-  Run("wt.exe")
+  Run("wt.exe", , "Max")
 }
 
 
