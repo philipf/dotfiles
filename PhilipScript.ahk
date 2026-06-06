@@ -11,21 +11,6 @@ SetWorkingDir(A_ScriptDir)  ; Ensures a consistent starting directory.
 VDADLL := A_ScriptDir '\VirtualDesktopAccessor.dll'
 
 
-
-; This script is written for AutoHotkey v2.0+
-; It maps the hotkey Ctrl+Q to send Alt+F4, which typically closes the active window.
-
-; The caret (^) represents the Control key.
-; The exclamation mark (!) represents the Alt key.
-; {F4} is the F4 key.
-
-^q::
-{
-    ; Send the Alt+F4 combination
-    Send "!{F4}"
-}
-
-
 ; =================================================================
 ; --- HOTKEYS ---
 ; =================================================================
@@ -74,41 +59,41 @@ GoToDesktop(9)
 }
   
 
-; --- 2. Move active window to a specific desktop (Win + Ctrl + Number/Numpad) ---
-#^1::
-#^Numpad1:: {
+; --- 2. Move active window to a specific desktop (Win + Shift + Number/Numpad) ---
+#+1::
+#+Numpad1:: {
     MoveWindowToDesktop(1)
 }
-#^2::
-#^Numpad2:: {
+#+2::
+#+Numpad2:: {
     MoveWindowToDesktop(2)
 }
-#^3::
-#^Numpad3:: {
+#+3::
+#+Numpad3:: {
     MoveWindowToDesktop(3)
 }
-#^4::
-#^Numpad4:: {
+#+4::
+#+Numpad4:: {
     MoveWindowToDesktop(4)
 }
-#^5::
-#^Numpad5:: {
+#+5::
+#+Numpad5:: {
     MoveWindowToDesktop(5)
 }
-#^6::
-#^Numpad6:: {
+#+6::
+#+Numpad6:: {
     MoveWindowToDesktop(6)
 }
-#^7::
-#^Numpad7:: {
+#+7::
+#+Numpad7:: {
     MoveWindowToDesktop(7)
 }
-#^8::
-#^Numpad8:: {
+#+8::
+#+Numpad8:: {
     MoveWindowToDesktop(8)
 }
-#^9:: 
-#^Numpad9:: {
+#+9::
+#+Numpad9:: {
     MoveWindowToDesktop(9)
 }
 
@@ -213,8 +198,6 @@ GoToRelativeDesktop(offset) {
     WinMinimize("A") ; Minimizes the active window ("A")
 }
 
-
-
 ; Control + Windows + \, open the GTD Kanban board in Obsidian
 ^#\::
 {
@@ -254,51 +237,6 @@ GoToRelativeDesktop(offset) {
 ^!t::
 {
   Run("wt.exe", , "Max")
-}
-
-
-; ; Control + Shift + Enter is pressed, run the python goodchat.py program
-; ^+Enter::
-; {
-;   ;before := A_Clipboard ;Save the clipboard
-;   Send("^a")
-;   A_Clipboard := "" ; Empty the clipboard
-;   Send("^c")
-
-;   if !ClipWait(5)
-;   {
-;       MsgBox "The attempt to copy text onto the clipboard failed."
-;       return
-;   }
-
-;   text := A_Clipboard
-
-;   path := "c:\tmp\goodchat.txt"
-;   command := "python `"G:\My Drive\Roaming\goodchat.py`" `"" text "`" --output " . path
-
-;   Send("{End}")
-;   Send("{Shift}+{Enter 2}")
-;   SendText("Processing...")
-;   Send("{Shift}+{Enter}")
-
-;   RunWait command, ,"Hide"
-;   result := FileRead(path)
-;   A_Clipboard := ""
-;   A_Clipboard := result
-;   Send("^a")
-;   ClipWait(5)
-;   Send("^v")
-
-;   ;A_Clipboard := before ; Restore the clipboard
-;   Return
-; }
-
-; F7 in Windows Explorer creates a New Folder
-F7::
-{
-  If WinActive("ahk_class CabinetWClass")
-    Send("^+n")
-  return
 }
 
 ; =================================================================
@@ -382,38 +320,6 @@ F7::
   Return
 }
 
-; ToggleTrack Edit
-F6::
-{
-  Run("C:\Program Files\LINQPad8\LPRun8.exe `"G:\My Drive\Roaming\LinqPad\LinqPadQueries\Personal\Productivity\Toggl\EditDescription.linq`"")
-  return
-}
-
-; Control + Windows + F7, activate Toggl Track and stop the running timer (sends Ctrl+S)
-^#F7::
-{
-  SetTitleMatchMode("Regex")
-  WinActivate("ahk_class HwndWrapper\[TogglDesktop.exe;;[\da-f\-]+\]")
-  ErrorLevel := WinWaitActive("ahk_class HwndWrapper\[TogglDesktop.exe;;[\da-f\-]+\]"), ErrorLevel := ErrorLevel = 0 ? 1 : 0
-  if WinActive("ahk_class HwndWrapper\[TogglDesktop.exe;;[\da-f\-]+\]")
-  {
-    Send("^s")
-  }
-  return
-}
-
-; Control + Windows + F8, activate Toggl Track and continue the last timer (sends Ctrl+O)
-^#F8::
-{
-  SetTitleMatchMode("Regex")
-  WinActivate("ahk_class HwndWrapper\[TogglDesktop.exe;;[\da-f\-]+\]")
-  ErrorLevel := WinWaitActive("ahk_class HwndWrapper\[TogglDesktop.exe;;[\da-f\-]+\]"), ErrorLevel := ErrorLevel = 0 ? 1 : 0
-  if WinActive("ahk_class HwndWrapper\[TogglDesktop.exe;;[\da-f\-]+\]")
-  {
-    Send("^o")
-  }
-  return
-}
 ; --- Corral all Teams windows to Desktop 2 (Win+Shift+T) ---
 #+t:: {
     Global VDADLL
@@ -438,26 +344,3 @@ F6::
     else
         TrayTip("Teams Corraller", "All Teams windows already on Desktop 2", 2)
 }
-
-; ^#Left::
-; {
-;   Title := WinGetTitle("A")
-;   WinSetExStyle("^0x80", Title)
-;   Send("{LWin down}{Ctrl down}{Left}{Ctrl up}{LWin up}")
-;   Sleep(50)
-;   WinSetExStyle("^0x80", Title)
-;   WinActivate(Title)
-;   Return
-; }
-
-; ^#Right::
-; {
-;   Title := WinGetTitle("A")
-;   WinSetExStyle("^0x80", Title)
-;   Send("{LWin down}{Ctrl down}{Right}{Ctrl up}{LWin up}")
-;   Sleep(50)
- 
-;   WinSetExStyle("^0x80", Title)
-;   WinActivate(Title)
-;   Return
-; }
