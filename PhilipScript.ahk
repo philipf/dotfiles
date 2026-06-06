@@ -318,7 +318,34 @@ GoToRelativeDesktop(offset) {
       return
     ; Translate C:\foo\bar -> /mnt/c/foo/bar for WSL
     wslPath := StrReplace(RegExReplace(item.Path, "^(\w):\\", "/mnt/$L1/"), "\", "/")
+
+    ; wt.exe is a launcher that exits immediately, so the new terminal window
+    ; doesn't inherit foreground rights. Snapshot existing WT windows, then
+    ; activate whichever new one appears.
+    wtBefore := WinGetList("ahk_class CASCADIA_HOSTING_WINDOW_CLASS")
     Run('wt.exe wsl -e /home/philipf/.local/share/mise/installs/neovim/latest/bin/nvim "' wslPath '"', , "Max")
+    ; Wait for the WT window itself, not WSL startup (which happens inside it);
+    ; generous deadline only matters on a cold start of Windows Terminal.
+    deadline := A_TickCount + 10000
+    while (A_TickCount < deadline) {
+      for wtHwnd in WinGetList("ahk_class CASCADIA_HOSTING_WINDOW_CLASS") {
+        isNew := true
+        for oldHwnd in wtBefore {
+          if (wtHwnd = oldHwnd) {
+            isNew := false
+            break
+          }
+        }
+        if isNew {
+          ; Only steal focus if the user is still on the Explorer window
+          ; they launched from (i.e. hasn't switched away during a cold start).
+          if WinActive("ahk_id " hwnd)
+            WinActivate(wtHwnd)
+          return
+        }
+      }
+      Sleep(50)
+    }
     return
   }
 }
