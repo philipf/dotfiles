@@ -43,5 +43,9 @@
 	diffFilter = delta --color-only
 [delta]
 	navigate = true
+	features = catppuccin-mocha   # Theme defined in the include below
+	line-numbers = true           # Set here, not via --line-numbers flag, so themed number styles apply
+[include]
+	path = ~/.config/delta/catppuccin.gitconfig
 [merge]
 	conflictStyle = zdiff3
