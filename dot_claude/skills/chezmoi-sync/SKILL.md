@@ -7,7 +7,9 @@ description: Report and sync chezmoi-managed dotfiles between this machine, the 
 
 Three-phase sync: **report → decide → sync**. Never skip the report phase, and never run sync actions the user hasn't selected.
 
-**Hard gate:** the rendered report (summary line + table from Phase 1) MUST appear as visible output to the user BEFORE any AskUserQuestion call. This holds even when the plan seems obvious, the user pre-named the files to sync, or there is only one change — the user decides from the interpreted report, not from raw script output or your internal reading of it.
+**Hard gate:** the rendered report (summary line + table from Phase 1) MUST appear as visible output to the user BEFORE asking for a decision. This holds even when the plan seems obvious, the user pre-named the files to sync, or there is only one change — the user decides from the interpreted report, not from raw script output or your internal reading of it.
+
+**Do NOT use AskUserQuestion anywhere in this skill** — the dialog suppresses the report text rendered in the same turn. All decisions are asked conversationally: print the question as plain text and end the turn; the user replies in chat.
 
 If the user passed arguments naming files (e.g. `add ~/.config/foo`), treat those as new files to `chezmoi add` in Phase 3.
 
@@ -49,14 +51,12 @@ Roll incoming/outgoing commits that touch a file into that file's row; if the br
 
 ## Phase 2 — Decide
 
-Only after the summary line and table have been shown (see hard gate above), ask via AskUserQuestion: **"Proceed with sync plan?"** — options: _Apply all suggestions_ / _Let me pick_ / _Abort_.
+Only after the summary line and table have been shown (see hard gate above), ask in plain text at the end of the same message: **"Proceed with sync plan?"** — offer _apply all suggestions_ / _let me pick_ / _abort_, then end the turn and wait for the user's reply.
 
-**Embed the report in the question** — text rendered in the same turn as the question dialog can fail to display, so the dialog must be self-sufficient:
+- _Let me pick_ → list the items per action group (re-add these / apply these / etc.) as a numbered list and ask which to include.
+- If no new files were passed as args, ask whether there are new files to `chezmoi add` only when it seems relevant — don't block the fast path.
 
-- _Let me pick_ → one multiSelect checklist per action group (re-add these / apply these / etc.).
-- If no new files were passed as args, ask conversationally whether there are new files to `chezmoi add` only when it seems relevant — don't block the fast path.
-
-**Conflicts** (changed both locally and on GitHub, or `MM` divergence): one question per file, showing both diffs first — options: _Merge both_ / _Keep local_ / _Take remote_ / _Skip_.
+**Conflicts** (changed both locally and on GitHub, or `MM` divergence): ask per file, showing both diffs first — offer _merge both_ / _keep local_ / _take remote_ / _skip_.
 
 - _Merge both_ = you edit the source file to combine both changes, show the result, and continue. If the merge is too tangled, suggest the user run `! chezmoi merge <file>` themselves.
 
