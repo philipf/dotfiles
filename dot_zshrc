@@ -26,9 +26,6 @@ bindkey -v
 # Binds Ctrl+e to accept the currently suggested command up to the end of the line.
 bindkey '^e' autosuggest-accept
 
-# Binds Ctrl+L to the vi-forward-word command, which moves the cursor forward to the beginning of the next word (this is a common VI-mode binding).
-#bindkey '^L' vi-forward-word
-
 # Binds Ctrl+k to move up in the command history or search the history if already at the top.
 bindkey '^k' up-line-or-search
 
@@ -73,14 +70,12 @@ for m in viins vicmd; do
 done
 unset m
 
-## Enable full-text editor 
-# Load the edit-command-line module
+## Enable full-text editor
 autoload -Uz edit-command-line
 zle -N edit-command-line
 
-# Bind the widget to Ctrl+X, Ctrl+E
-bindkey '^Xe' edit-command-line
-bindkey '^X^e' edit-command-line
+bindkey -M viins '^G' edit-command-line
+bindkey -M vicmd '^G' edit-command-line
 
 # Must be defined before starship init to prevent recursive zle-keymap-select wrapping in vi mode
 zle-keymap-select() {
