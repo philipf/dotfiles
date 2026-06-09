@@ -49,3 +49,5 @@
 	path = ~/.config/delta/catppuccin.gitconfig
 [merge]
 	conflictStyle = zdiff3
+[fetch]
+	prune = true
