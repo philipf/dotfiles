@@ -112,8 +112,9 @@ alias wttr="curl wttr.in/Churton+Park,Wellington"
 # ZOXIDE (must be after cd alias and mise — zoxide doctor enforces this)
 # alias cd="z"
 
-gj() { local d; d=$(gj-pick "$@") || return; [ -n "$d" ] && cd "$d"; }
-gjj() { gj --cwd "$@"; }
+# git-tools shell wrappers: wt (git wt), gj, gjj
+# (run git-tools/symlink-init.sh once per machine to create this symlink)
+[ -f ~/.local/bin/shell-init.sh ] && source ~/.local/bin/shell-init.sh
 
 # fzf
 # Set up fzf key bindings and fuzzy completion
