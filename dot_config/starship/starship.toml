@@ -11,6 +11,14 @@
 # Inserts a blank line between shell prompts
 add_newline = false
 
+[directory]
+# Show the real filesystem path (not collapsed to the repo/worktree root) so that
+# same-named worktrees like .../gotta-go/main vs .../big-swim-nz/main are distinct.
+# Keep only the last 7 path components; deeper paths get the "…/" prefix.
+truncate_to_repo = false
+truncation_length = 7
+truncation_symbol = "…/"
+
 [python]
 symbol = " "
 
@@ -51,14 +59,15 @@ description = "Only show git_metrics if we're not in a jj repo"
 style = ""
 
 [custom.worktree]
-# Disambiguate git worktrees: directory truncates to the worktree root (e.g. just
-# "main"), so show "<project>/<worktree>" whenever we're in a *linked* worktree.
-# Linked worktree => git-dir (.git/worktrees/<name>) differs from the common dir (.git).
-when = '[ "$(git rev-parse --absolute-git-dir 2>/dev/null)" != "$(cd "$(git rev-parse --git-common-dir 2>/dev/null)" 2>/dev/null && pwd -P)" ]'
-command = 'printf "%s/%s" "$(basename "$(dirname "$(cd "$(git rev-parse --git-common-dir)" && pwd -P)")")" "$(basename "$(git rev-parse --show-toplevel)")"'
-format = "[⑂ $output]($style) "
+# A yellow ⑂ marks that we're inside a *linked* git worktree, where starship's
+# directory module truncates to the worktree root so the path alone is ambiguous.
+# Linked worktree => resolved git-dir (.git/worktrees/<name>) differs from the
+# resolved common dir (.git). Guarded to stay silent outside a git repo and in a
+# primary checkout; pwd -P keeps it correct under symlinked paths.
+when = 'git rev-parse --is-inside-work-tree >/dev/null 2>&1 && gd=$(cd "$(git rev-parse --git-dir 2>/dev/null)" 2>/dev/null && pwd -P) && cdr=$(cd "$(git rev-parse --git-common-dir 2>/dev/null)" 2>/dev/null && pwd -P) && [ "$gd" != "$cdr" ]'
+format = "[⑂]($style) "
 style = "bold yellow"
-description = "Show project/worktree name when inside a linked git worktree"
+description = "Mark when inside a linked git worktree"
 
 [git_branch]
 disabled = true
