@@ -9,6 +9,7 @@ return {
       -- "roslyn",
       -- "rzls",
       "netcoredbg",
+      "markdownlint-cli2",
     },
   },
 }

@@ -11,6 +11,7 @@ return {
       -- LazyVim's defaults will still be applied to other filetypes (like lua, sh, etc.).
       formatters_by_ft = {
         yaml = { "yamlfix" },
+        markdown = { "prettierd", "markdownlint-cli2" },
         html = { "prettierd" },
         json = { "prettierd" },
         jsonc = { "prettierd" },

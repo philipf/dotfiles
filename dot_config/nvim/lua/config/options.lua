@@ -66,6 +66,8 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+vim.g.autoformat = false
+
 -- Addtional outside Kickstart
 
 -- Tab settings from Mr Jakob
