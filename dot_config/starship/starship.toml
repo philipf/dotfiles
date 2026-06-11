@@ -54,7 +54,7 @@ style = ""
 # Disambiguate git worktrees: directory truncates to the worktree root (e.g. just
 # "main"), so show "<project>/<worktree>" whenever we're in a *linked* worktree.
 # Linked worktree => git-dir (.git/worktrees/<name>) differs from the common dir (.git).
-when = '[ "$(git rev-parse --git-dir 2>/dev/null)" != "$(git rev-parse --git-common-dir 2>/dev/null)" ]'
+when = '[ "$(git rev-parse --absolute-git-dir 2>/dev/null)" != "$(cd "$(git rev-parse --git-common-dir 2>/dev/null)" 2>/dev/null && pwd -P)" ]'
 command = 'printf "%s/%s" "$(basename "$(dirname "$(cd "$(git rev-parse --git-common-dir)" && pwd -P)")")" "$(basename "$(git rev-parse --show-toplevel)")"'
 format = "[⑂ $output]($style) "
 style = "bold yellow"
