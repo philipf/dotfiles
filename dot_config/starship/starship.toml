@@ -50,6 +50,16 @@ command = "starship module git_metrics"
 description = "Only show git_metrics if we're not in a jj repo"
 style = ""
 
+[custom.worktree]
+# Disambiguate git worktrees: directory truncates to the worktree root (e.g. just
+# "main"), so show "<project>/<worktree>" whenever we're in a *linked* worktree.
+# Linked worktree => git-dir (.git/worktrees/<name>) differs from the common dir (.git).
+when = '[ "$(git rev-parse --git-dir 2>/dev/null)" != "$(git rev-parse --git-common-dir 2>/dev/null)" ]'
+command = 'printf "%s/%s" "$(basename "$(dirname "$(cd "$(git rev-parse --git-common-dir)" && pwd -P)")")" "$(basename "$(git rev-parse --show-toplevel)")"'
+format = "[⑂ $output]($style) "
+style = "bold yellow"
+description = "Show project/worktree name when inside a linked git worktree"
+
 [git_branch]
 disabled = true
 

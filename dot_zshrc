@@ -112,6 +112,9 @@ alias wttr="curl wttr.in/Churton+Park,Wellington"
 # ZOXIDE (must be after cd alias and mise — zoxide doctor enforces this)
 # alias cd="z"
 
+gj() { local d; d=$(gj-pick "$@") || return; [ -n "$d" ] && cd "$d"; }
+gjj() { gj --cwd "$@"; }
+
 # fzf
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
