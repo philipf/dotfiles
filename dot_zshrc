@@ -139,8 +139,13 @@ export SAVEHIST=$HISTSIZE
 
 source <(COMPLETE=zsh jj)
 
-export SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs
-# export DOCKER_HOST="unix:///run/user/$(id -u)/podman/podman.sock"
+
+if [[ -d /usr/lib/ssl/certs ]]; then
+  export SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs
+else
+  export SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/etc/ssl/certs
+fi
+
 
 # pnpm
 export PNPM_HOME="/home/philipf/.local/share/pnpm"
@@ -170,3 +175,7 @@ export PATH="$HOME/.dotnet/tools:$PATH"
 
 eval "$(mise activate zsh)"
 eval "$(zoxide init zsh)"
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/philipf/.local/bin:$PATH"

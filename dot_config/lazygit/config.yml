@@ -1,6 +1,7 @@
 ---
 # Catppuccin Mocha (blue accent) — https://github.com/catppuccin/lazygit
 gui:
+  nerdFontsVersion: "3"
   theme:
     activeBorderColor: ['#89b4fa', bold]
     inactiveBorderColor: ['#a6adc8']
