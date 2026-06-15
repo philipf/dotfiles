@@ -30,3 +30,5 @@ git:
     - colorArg: always
       pager: delta --paging=never
 promptToReturnFromSubprocess: false
+os:
+  editInTerminal: true

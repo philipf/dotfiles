@@ -22,6 +22,7 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Add vi mode to terminal
 bindkey -v
+KEYTIMEOUT=1
 
 # Binds Ctrl+e to accept the currently suggested command up to the end of the line.
 bindkey '^e' autosuggest-accept
@@ -104,8 +105,18 @@ alias lt="eza --tree --level=2 --long --icons --git --group-directories-first"
 alias ..="cd .."
 
 alias v="nvim"
-alias lg="lazygit"
+# alias lg="lazygit"
+# allow lazygit to jump between worktrees on exit
+lg() {
+    export LAZYGIT_NEW_DIR_FILE=~/.lazygit/newdir
 
+    lazygit "$@"
+
+    if [ -f $LAZYGIT_NEW_DIR_FILE ]; then
+        cd "$(cat $LAZYGIT_NEW_DIR_FILE)"
+        rm -f $LAZYGIT_NEW_DIR_FILE
+    fi
+}
 alias weather="curl wttr.in/Churton+Park,Wellington"
 alias wttr="curl wttr.in/Churton+Park,Wellington"
 
