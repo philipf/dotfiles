@@ -187,6 +187,10 @@ export PATH="$HOME/.dotnet/tools:$PATH"
 eval "$(mise activate zsh)"
 eval "$(zoxide init zsh)"
 
+# GPG: tell gpg-agent which terminal to prompt for the key passphrase on.
+# Without this, signing fails with "Inappropriate ioctl for device" in WSL2.
+export GPG_TTY=$(tty)
+
 
 # Added by Antigravity CLI installer
 export PATH="/home/philipf/.local/bin:$PATH"
