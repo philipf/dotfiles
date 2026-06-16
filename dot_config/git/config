@@ -48,6 +48,14 @@
 [include]
 	path = ~/.config/delta/catppuccin.gitconfig
 [merge]
-	conflictStyle = zdiff3
+	conflictstyle = diff3
+	tool = diffview
 [fetch]
 	prune = true
+[mergetool "nvim"]
+	cmd = nvim -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c \"wincmd t\" -c \"wincmd b\" -c \"wincmd J\"
+[mergetool]
+	keepBackup = false
+	prompt = false
+[mergetool "diffview"]
+	cmd = nvim -n -c \"DiffviewOpen\" \"$MERGE\"
