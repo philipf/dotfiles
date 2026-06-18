@@ -194,3 +194,7 @@ export GPG_TTY=$(tty)
 
 # Added by Antigravity CLI installer
 export PATH="/home/philipf/.local/bin:$PATH"
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

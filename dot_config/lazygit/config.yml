@@ -30,6 +30,33 @@ customCommands:
     description: Open selected file in nvim Diffview
     output: terminal
     command: cd "$(git rev-parse --show-toplevel)" && nvim "{{.SelectedFile.Name}}" -c "DiffviewOpen -- {{.SelectedFile.Name}}"
+  - key: <c-a>
+    context: files
+    description: Generate commit message with Claude (AI), then open editor
+    output: terminal
+    command: 'f="$(mktemp)" && git diff --staged | claude -p ''Generate a concise git commit message for these staged changes. Output ONLY the raw commit message — no markdown, code blocks, backticks, or explanations. Use Conventional Commits format.'' --model haiku --output-format text > "$f"; git commit -e -F "$f"; rm -f "$f"'
+  - key: <c-o>
+    context: localBranches
+    description: Open GitHub PR for selected branch in browser
+    command: gh pr view -w {{.SelectedLocalBranch.Name}}
+  - key: <c-o>
+    context: commits
+    description: Open GitHub PR in browser
+    command: gh pr view -w
+  - key: <c-p>
+    context: localBranches
+    loadingText: Checking out GitHub Pull Request...
+    command: gh pr checkout {{.Form.PullRequestNumber}}
+    prompts:
+      - type: menuFromCommand
+        title: Which PR do you want to check out?
+        key: PullRequestNumber
+        command: >-
+          gh pr list --json number,title,headRefName,updatedAt
+          --template '{{`{{range .}}{{printf "#%v: %s - %s (%s)" .number .title .headRefName (timeago .updatedAt)}}{{end}}`}}'
+        filter: '#(?P<number>[0-9]+): (?P<title>.+) - (?P<ref_name>[^ ]+).*'
+        valueFormat: '{{.number}}'
+        labelFormat: '{{"#" | black | bold}}{{.number | white | bold}} {{.title | yellow | bold}}{{" [" | black | bold}}{{.ref_name | green}}{{"]" | black | bold}}'
 git:
   pagers:
     - colorArg: always
