@@ -26,6 +26,9 @@
     ],
     "UserPromptSubmit": [
       { "hooks": [ { "type": "command", "command": "bash ~/.claude/hooks/tmux-attention.sh busy" } ] }
+    ],
+    "SessionEnd": [
+      { "hooks": [ { "type": "command", "command": "bash ~/.claude/hooks/tmux-attention.sh off" } ] }
     ]
   },
   "enabledPlugins": {
