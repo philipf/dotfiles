@@ -1,0 +1,54 @@
+{
+  "env": {
+    "_ZO_DOCTOR": "0"
+  },
+  "permissions": {
+    "allow": [
+      "Read(/home/philipf/SecondBrain/_GTD/*)",
+      "Edit(/home/philipf/SecondBrain/_GTD/_Board.md)",
+      "Write(/home/philipf/SecondBrain/_GTD/*)"
+    ]
+  },
+  "model": "opus",
+  "worktree": {
+    "baseRef": "fresh"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  },
+  "hooks": {
+    "Stop": [
+      { "hooks": [ { "type": "command", "command": "bash ~/.claude/hooks/tmux-attention.sh waiting" } ] }
+    ],
+    "Notification": [
+      { "hooks": [ { "type": "command", "command": "bash ~/.claude/hooks/tmux-attention.sh waiting" } ] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "bash ~/.claude/hooks/tmux-attention.sh busy" } ] }
+    ]
+  },
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true,
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
+    }
+  },
+  "syntaxHighlightingDisabled": false,
+  "effortLevel": "high",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "theme": "custom:catppuccin-mocha",
+  "autoCompactEnabled": false,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
+}
