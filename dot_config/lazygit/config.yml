@@ -30,6 +30,16 @@ customCommands:
     description: Open selected file in nvim Diffview
     output: terminal
     command: cd "$(git rev-parse --show-toplevel)" && nvim "{{.SelectedFile.Name}}" -c "DiffviewOpen -- {{.SelectedFile.Name}}"
+  - key: <c-t>
+    context: commits, subCommits, reflogCommits
+    description: Review whole commit in nvim Diffview
+    output: terminal
+    command: cd "$(git rev-parse --show-toplevel)" && nvim -c "DiffviewOpen {{.SelectedCommit.Hash}}^!"
+  - key: <c-t>
+    context: commitFiles
+    description: Review selected file/folder at commit in nvim Diffview
+    output: terminal
+    command: cd "$(git rev-parse --show-toplevel)" && nvim -c "DiffviewOpen {{.SelectedCommit.Hash}}^! -- {{.SelectedCommitFilePath}}"
   - key: <c-a>
     context: files
     description: Generate commit message with Claude (AI), then open editor
