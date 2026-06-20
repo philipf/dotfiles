@@ -9,7 +9,6 @@
       "Write(/home/philipf/SecondBrain/_GTD/*)"
     ]
   },
-  "model": "opus",
   "hooks": {
     "Stop": [
       {
