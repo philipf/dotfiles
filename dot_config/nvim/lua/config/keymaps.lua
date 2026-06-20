@@ -41,6 +41,7 @@ map("n", "<leader>bo", function()
 end, { desc = "Delete Other Buffers" })
 map("n", "<leader>bD", "<cmd>:bd<cr>", { desc = "Delete Buffer and Window" })
 map("n", "<leader>bw", "<cmd>w | bd<cr>", { desc = "Write and Close Buffer" })
+map("n", "<leader>yp", function() vim.fn.setreg("+", vim.fn.expand("%:p")) end, { desc = "Yank Full Path" })
 
 -- Clear search and stop snippet on escape
 map({ "i", "n", "s" }, "<esc>", function()
@@ -58,7 +59,11 @@ map(
   { desc = "Redraw / Clear hlsearch  / Diff Update" }
 )
 
--- For consitency with ghostty, also map / for splitting
--- map("n", "<leader>/", "<C-W>v", { desc = "Split Window Right" })
+-- Zoom current window full screen (tmux `prefix z` mental model)
+Snacks.toggle.zoom():map("<leader>z")
+
+-- Split windows (ghostty-consistent). Remove LazyVim's duplicate <leader>| and <leader>-.
+pcall(vim.keymap.del, "n", "<leader>|")
+pcall(vim.keymap.del, "n", "<leader>-")
 map("n", "<leader>%", "<C-W>v", { desc = "Split Window Right", remap = true })
 map("n", '<leader>"', "<C-W>s", { desc = "Split Window Down", remap = true })
