@@ -13,3 +13,18 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.diagnostic.enable(false, { bufnr = args.buf })
   end,
 })
+
+-- In the gitsigns blame panel (<leader>ghB), jump between commit blocks.
+-- Block-start lines begin with ┍ (multi-line commit) or ╺ (single-line commit).
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "gitsigns-blame",
+  callback = function(args)
+    local pat = [[\v^(┍|╺)]]
+    vim.keymap.set("n", "]c", function()
+      vim.fn.search(pat, "W")
+    end, { buffer = args.buf, desc = "Next commit block" })
+    vim.keymap.set("n", "[c", function()
+      vim.fn.search(pat, "bW")
+    end, { buffer = args.buf, desc = "Prev commit block" })
+  end,
+})
