@@ -1,6 +1,7 @@
 ---
 name: chezmoi-sync
 description: Report and sync chezmoi-managed dotfiles between this machine, the chezmoi source dir, and GitHub (philipf/dotfiles). Use when the user wants to sync dotfiles, check pending dotfile changes, or push/pull chezmoi changes between work and laptop machines.
+disable-model-invocation: true
 ---
 
 # chezmoi-sync

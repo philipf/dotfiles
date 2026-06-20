@@ -1,6 +1,7 @@
 ---
 name: todo
 description: Add a new item to the GTD inbox (## In section) of the Kanban board
+disable-model-invocation: true
 ---
 
 The user wants to capture a new GTD inbox item. The item to capture is provided as the argument after `/todo`.

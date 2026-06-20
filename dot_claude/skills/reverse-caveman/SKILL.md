@@ -1,6 +1,7 @@
 ---
 name: reverse-caveman
 description: Inverse of caveman — expand terse output into full natural-language prose. This is a manual style toggle, NOT a task helper. Activate ONLY when the user explicitly types /reverse-caveman (or asks to "undo caveman" / "expand mode"). Do not auto-invoke for ordinary work.
+disable-model-invocation: true
 ---
 
 

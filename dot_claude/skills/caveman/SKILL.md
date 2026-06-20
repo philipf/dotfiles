@@ -1,6 +1,7 @@
 ---
 name: caveman
 description: Reduce tokens by applying a shortened form of responses
+disable-model-invocation: true
 ---
 
 

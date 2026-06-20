@@ -39,4 +39,10 @@ case "$1" in
     ;;
 esac
 
+# Force an immediate status-line repaint. Without this, the option change above
+# only becomes visible on the next `status-interval` tick (or an incidental
+# redraw), which looks like the hook "didn't run". -S refreshes the status line
+# of every attached client.
+tmux refresh-client -S 2>/dev/null
+
 exit 0

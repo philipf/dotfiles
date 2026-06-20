@@ -1,5 +1,16 @@
 return {
 	"folke/snacks.nvim",
+	init = function()
+		-- snacks.image needs conceallevel >= 2 to keep inline renders visible in
+		-- Normal mode; without this some filetype plugins reset it to 0 on BufEnter
+		-- and the diagram disappears the moment you leave Insert mode.
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "markdown",
+			callback = function()
+				vim.opt_local.conceallevel = 2
+			end,
+		})
+	end,
 	opts = {
 		image = {
 			enabled = true,
@@ -50,6 +61,13 @@ return {
 				-- width (window minus the number/sign gutter).
 				max_width = 100,
 				max_height = 40,
+				-- Returning false tells snacks not to wipe the inline layout when
+				-- leaving Insert mode, which is what causes diagrams to vanish in
+				-- Normal mode. (conceal=true was tried and rejected: it clips tall
+				-- diagrams due to an overlay height bug.)
+				conceal = function()
+					return false
+				end,
 			},
 			-- Using default inline rendering with conceal left OFF (math only).
 			-- Tried two alternatives, both rejected:

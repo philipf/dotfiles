@@ -9,6 +9,7 @@
       "Write(/home/philipf/SecondBrain/_GTD/*)"
     ]
   },
+  "model": "opus",
   "hooks": {
     "Stop": [
       {
@@ -59,7 +60,8 @@
     "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "worktrunk@worktrunk": true
+    "worktrunk@worktrunk": true,
+    "clangd-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "worktrunk": {
@@ -79,6 +81,5 @@
   "autoCompactEnabled": false,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "model": "opus"
+  "voiceEnabled": true
 }
