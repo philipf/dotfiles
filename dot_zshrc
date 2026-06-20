@@ -93,7 +93,7 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 export EDITOR=nvim
 
-alias 3cal="ncal -b -3 -M"
+
 alias la=tree
 alias cat=bat
 
