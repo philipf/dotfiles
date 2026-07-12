@@ -14,20 +14,39 @@ win=$(tmux display-message -p -t "$TMUX_PANE" '#{window_id}' 2>/dev/null) || exi
 
 # set_mark <marker> <color-or-empty>: inject "<color>#W<marker>#[default]" at #W
 # in this window's tab formats, preserving the rest of the format.
+#
+# The pristine base format is cached once per window (in @attn-base-fmt /
+# @attn-base-fmt-cur) the first time this hook touches the window, and every
+# call rebuilds from that cached base rather than from the live tmux option.
+# Reading the live option would pick up whatever a *previous* call already
+# injected (marker + color wrapper), and since the injected text itself
+# contains "#W", each subsequent call would nest another marker inside the
+# last one's color wrapper instead of replacing it -- markers pile up and a
+# color set by "waiting" never gets cleared by a later "busy".
+get_base() {
+  local opt="$1" cache="$2" fallback="$3"
+  local val
+  val=$(tmux show-window-options -t "$win" -qv "$cache" 2>/dev/null)
+  if [ -z "$val" ]; then
+    val=$(tmux show-options -gqv "$opt")
+    [ -z "$val" ] && val="$fallback"
+    tmux set-window-option -t "$win" "$cache" "$val" 2>/dev/null
+  fi
+  printf '%s' "$val"
+}
+
 set_mark() {
   local marker="$1" color="$2"
-  local fmt cur namefmt
-  fmt=$(tmux show-options -gqv window-status-format)
-  cur=$(tmux show-options -gqv window-status-current-format)
-  [ -z "$fmt" ] && fmt='#I:#W#{?window_flags,#{window_flags}, }'
-  [ -z "$cur" ] && cur="$fmt"
+  local base_fmt base_cur namefmt
+  base_fmt=$(get_base window-status-format @attn-base-fmt '#I:#W#{?window_flags,#{window_flags}, }')
+  base_cur=$(get_base window-status-current-format @attn-base-fmt-cur "$base_fmt")
   if [ -n "$color" ]; then
     namefmt="#[fg=$color]#W$marker#[default]"
   else
     namefmt="#W$marker"
   fi
-  tmux set-window-option -t "$win" window-status-format "${fmt//\#W/$namefmt}" 2>/dev/null
-  tmux set-window-option -t "$win" window-status-current-format "${cur//\#W/$namefmt}" 2>/dev/null
+  tmux set-window-option -t "$win" window-status-format "${base_fmt//\#W/$namefmt}" 2>/dev/null
+  tmux set-window-option -t "$win" window-status-current-format "${base_cur//\#W/$namefmt}" 2>/dev/null
 }
 
 case "$1" in
@@ -36,6 +55,8 @@ case "$1" in
   off)
     tmux set-window-option -t "$win" -u window-status-format 2>/dev/null
     tmux set-window-option -t "$win" -u window-status-current-format 2>/dev/null
+    tmux set-window-option -t "$win" -u @attn-base-fmt 2>/dev/null
+    tmux set-window-option -t "$win" -u @attn-base-fmt-cur 2>/dev/null
     ;;
 esac
 

@@ -9,6 +9,7 @@
       "Write(/home/philipf/SecondBrain/_GTD/*)"
     ]
   },
+  "model": "sonnet",
   "hooks": {
     "Stop": [
       {
