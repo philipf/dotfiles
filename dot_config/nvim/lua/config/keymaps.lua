@@ -59,6 +59,15 @@ map(
   { desc = "Redraw / Clear hlsearch  / Diff Update" }
 )
 
+-- Remove Windows (CRLF) line endings from the current buffer
+map("n", "<leader>r", function()
+  local view = vim.fn.winsaveview()
+  vim.cmd([[keepjumps keeppatterns %s/\r$//e]])
+  vim.bo.fileformat = "unix"
+  vim.fn.winrestview(view)
+  vim.notify("Removed Windows line endings (CRLF -> LF)", vim.log.levels.INFO)
+end, { desc = "Remove Windows Line Endings (CRLF -> LF)" })
+
 -- Zoom current window full screen (tmux `prefix z` mental model)
 Snacks.toggle.zoom():map("<leader>z")
 
