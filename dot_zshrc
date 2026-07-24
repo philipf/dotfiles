@@ -17,8 +17,16 @@ autoload -Uz compinit
 # Executes the compinit function to initialize the completion system.
 compinit
 
+# Early PATH/activation setup so the tool init lines below (starship, fzf,
+# pyenv, jj, fnox) can actually find their binaries — mise-managed tools in
+# particular only resolve once `mise activate` has run.
+export PATH="$HOME/.local/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+command -v mise >/dev/null 2>&1 && eval "$(mise activate zsh)"
+
 # See https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Add vi mode to terminal
 bindkey -v
@@ -86,7 +94,7 @@ zle-keymap-select() {
 zle -N zle-keymap-select
 
 # Initializes the Starship prompt (a fast, customizable prompt for the shell). The eval executes the shell setup script that starship init zsh outputs, integrating the prompt with Zsh.
-eval "$(starship init zsh)"
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 
 # Sets an environment variable to specify the path to the Starship configuration file. This tells Starship where to find its customization settings.
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -129,7 +137,7 @@ alias wttr="curl wttr.in/Churton+Park,Wellington"
 
 # fzf
 # Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
+command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 
 # GO
 export GOROOT=/usr/lib/golang
@@ -142,13 +150,13 @@ export PATH=/home/philipf/bin:$PATH
 # Python
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - zsh)"
+command -v pyenv >/dev/null 2>&1 && eval "$(pyenv init - zsh)"
 
 export HISTSIZE=100000
 export HISTFILE=~/.zsh_history
 export SAVEHIST=$HISTSIZE
 
-source <(COMPLETE=zsh jj)
+command -v jj >/dev/null 2>&1 && source <(COMPLETE=zsh jj)
 
 
 if [[ -d /usr/lib/ssl/certs ]]; then
@@ -184,8 +192,7 @@ function y() {
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.dotnet/tools:$PATH"
 
-eval "$(mise activate zsh)"
-eval "$(zoxide init zsh)"
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 
 # GPG: tell gpg-agent which terminal to prompt for the key passphrase on.
 # Without this, signing fails with "Inappropriate ioctl for device" in WSL2.
@@ -195,7 +202,12 @@ export GPG_TTY=$(tty)
 # Added by Antigravity CLI installer
 export PATH="/home/philipf/.local/bin:$PATH"
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
-eval "$(fnox activate zsh)"
+if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+elif [[ -x "$HOME/.linuxbrew/bin/brew" ]]; then
+  eval "$("$HOME/.linuxbrew/bin/brew" shellenv zsh)"
+fi
+
+command -v fnox >/dev/null 2>&1 && eval "$(fnox activate zsh)"
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

@@ -5,11 +5,10 @@
   "permissions": {
     "allow": [
       "Read(/home/philipf/SecondBrain/_GTD/*)",
-      "Edit(/home/philipf/SecondBrain/_GTD/_Board.md)",
-      "Write(/home/philipf/SecondBrain/_GTD/*)"
+      "Edit(/home/philipf/SecondBrain/_GTD/*)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "hooks": {
     "Stop": [
       {
@@ -77,6 +76,7 @@
     "enabled": true,
     "mode": "hold"
   },
+  "skipWorkflowUsageWarning": true,
   "theme": "custom:catppuccin-mocha",
   "autoCompactEnabled": false,
   "agentPushNotifEnabled": true,
