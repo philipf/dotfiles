@@ -11,6 +11,7 @@ return {
       -- LazyVim's defaults will still be applied to other filetypes (like lua, sh, etc.).
       formatters_by_ft = {
         yaml = { "yamlfix" },
+        xml = { "xmlformatter" },
         markdown = { "prettierd", "markdownlint-cli2" },
         html = { "prettierd" },
         json = { "prettierd" },
@@ -19,6 +20,11 @@ return {
         typescriptreact = { "prettierd" },
         javascript = { "prettierd" },
         javascriptreact = { "prettierd" },
+      },
+
+      -- Formatter-specific arg overrides.
+      formatters = {
+        xmlformatter = { prepend_args = { "--indent", "2" } },
       },
     },
   },
