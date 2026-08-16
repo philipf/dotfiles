@@ -2,3 +2,10 @@
 # target for ~/README.md and reports it perpetually missing; `chezmoi forget`
 # is the wrong fix because it would delete the file the GitHub repo renders.
 README.md
+
+# Claude Code rewrites this file itself, including an autoMode.environment
+# block describing the local security posture (secrets tooling, CI secret
+# names, repo paths). This repo is public, so that block must not be tracked,
+# and stripping it by hand does not hold — Claude Code regenerates it. The
+# rest of ~/.claude (skills, hooks, statusline, themes) stays managed.
+.claude/settings.json
