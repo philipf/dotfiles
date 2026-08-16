@@ -1,4 +1,3 @@
----
 # Catppuccin Mocha (blue accent) — https://github.com/catppuccin/lazygit
 gui:
   nerdFontsVersion: '3'
@@ -77,15 +76,14 @@ customCommands:
         title: Which PR do you want to check out?
         key: PullRequestNumber
         command: >-
-          gh pr list --json number,title,headRefName,updatedAt
-          --template '{{`{{range .}}{{printf "#%v: %s - %s (%s)" .number .title .headRefName (timeago .updatedAt)}}{{end}}`}}'
+          gh pr list --json number,title,headRefName,updatedAt --template '{{`{{range .}}{{printf "#%v: %s - %s (%s)" .number .title .headRefName (timeago .updatedAt)}}{{end}}`}}'
         filter: '#(?P<number>[0-9]+): (?P<title>.+) - (?P<ref_name>[^ ]+).*'
         valueFormat: '{{.number}}'
         labelFormat: '{{"#" | black | bold}}{{.number | white | bold}} {{.title | yellow | bold}}{{" [" | black | bold}}{{.ref_name | green}}{{"]" | black | bold}}'
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --paging=never
+      command: delta --paging=never
 promptToReturnFromSubprocess: false
 os:
   editInTerminal: true
