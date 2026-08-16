@@ -1,0 +1,4 @@
+# Repo documentation, not a dotfile. Without this, chezmoi treats it as a
+# target for ~/README.md and reports it perpetually missing; `chezmoi forget`
+# is the wrong fix because it would delete the file the GitHub repo renders.
+README.md

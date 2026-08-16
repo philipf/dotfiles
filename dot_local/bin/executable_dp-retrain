@@ -1,0 +1,9 @@
+#!/bin/bash
+# Force a DisplayPort link retrain on DP-2 (Samsung G9 via Lenovo hub).
+# Fixes blocky red/pink text caused by the link silently training with
+# YCbCr chroma subsampling instead of full RGB 4:4:4.
+hyprctl keyword monitor "DP-2,disable"
+sleep 2
+# Reload re-applies monitors.conf, re-enabling DP-2 with the configured mode
+hyprctl reload
+notify-send "DP-2 link retrained" "Check if red/pink text is sharp again."

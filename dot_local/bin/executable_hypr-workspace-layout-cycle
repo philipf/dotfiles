@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Cycle the layout on the current active workspace through:
+#   master (Omarchy default) -> dwindle -> scrolling -> master ...
+# Custom replacement for omarchy-hyprland-workspace-layout-toggle, which only
+# toggles dwindle <-> scrolling and can never return to the master default.
+#
+# Mirrors the stock toggle's mechanism (Omarchy quattro): the choice is written
+# as a Lua workspace rule under ~/.local/state/omarchy/workspace-layouts/ so it
+# survives a Hyprland reload, then applied live via `hyprctl eval`.
+
+ACTIVE_WORKSPACE=$(hyprctl activeworkspace -j | jq -r '.id')
+[[ $ACTIVE_WORKSPACE =~ ^-?[0-9]+$ ]] || exit 1
+CURRENT_LAYOUT=$(hyprctl activeworkspace -j | jq -r '.tiledLayout')
+LAYOUTS_DIR="$HOME/.local/state/omarchy/workspace-layouts"
+LAYOUT_FILE="$LAYOUTS_DIR/$ACTIVE_WORKSPACE.lua"
+
+case "$CURRENT_LAYOUT" in
+  master) NEW_LAYOUT=dwindle ;;
+  dwindle) NEW_LAYOUT=scrolling ;;
+  scrolling) NEW_LAYOUT=master ;;
+  *) NEW_LAYOUT=master ;;
+esac
+
+mkdir -p "$LAYOUTS_DIR"
+printf 'hl.workspace_rule({ workspace = "%s", layout = "%s" })\n' "$ACTIVE_WORKSPACE" "$NEW_LAYOUT" >"$LAYOUT_FILE"
+
+hyprctl eval "hl.workspace_rule({ workspace = \"$ACTIVE_WORKSPACE\", layout = \"$NEW_LAYOUT\" })" >/dev/null 2>&1 ||
+  hyprctl keyword workspace "$ACTIVE_WORKSPACE, layout:$NEW_LAYOUT"
+
+omarchy-notification-send -g 󱂬 "Workspace layout set to $NEW_LAYOUT"

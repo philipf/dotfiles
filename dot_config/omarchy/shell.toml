@@ -1,0 +1,15 @@
+# Machine-level Omarchy shell overrides. Layered on top of whatever theme is
+# active (theme keys lose to these), watched by the shell, so edits here apply
+# live without a restart.
+#
+# base-size is the rem root for every Style.font.* token in the shell: the bar,
+# menus, notifications, and panels all derive from it. The shell default is 12.
+# 18 restores the bar text size this machine used pre-quattro, when the bar was
+# waybar and ~/.config/waybar/style.css pinned font-size: 18px.
+#
+# Note: `omarchy display text size <n>` writes this same key, but also drives
+# the GTK text-scaling-factor and the terminal point size in lockstep. Setting
+# base-size directly keeps the change to the shell and leaves Ghostty at 13pt.
+
+[font]
+base-size = 18
