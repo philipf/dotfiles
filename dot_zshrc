@@ -94,6 +94,7 @@ alias cat=bat
 # Eza
 alias l="eza -l --icons --git -a  --group-directories-first"
 alias lt="eza --tree --level=2 --long --icons --git --group-directories-first"
+alias t="eza -TD -L 3 -s name --icons"
 
 # CD shortcuts
 alias ..="cd .."

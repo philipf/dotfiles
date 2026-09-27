@@ -59,11 +59,14 @@ function M.setup()
 
     return function(lines)
       if has_wayland then
-        local cmd = { "wl-copy", "--sensitive", "--type", "text/plain" }
+        local cmd = { "wl-copy", "--type", "text/plain" }
         if register == "*" then
           cmd[#cmd + 1] = "--primary"
         end
-        vim.fn.system(cmd, lines)
+        local out = vim.fn.system(cmd, lines)
+        if vim.v.shell_error ~= 0 then
+          vim.notify("wl-copy failed: " .. out, vim.log.levels.WARN)
+        end
       end
 
       if vim.g.omarchy_remote_clipboard_osc52 ~= false then
