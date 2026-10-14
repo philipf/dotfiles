@@ -23,7 +23,7 @@ return {
 
     keys = {
       {
-        "<leader>dd",
+        "<leader>gvv",
         function()
           if next(require("diffview.lib").views) == nil then
             vim.cmd("DiffviewOpen")
@@ -33,9 +33,9 @@ return {
         end,
         desc = "Toggle Diffview",
       },
-      { "<leader>dc", "<cmd>DiffviewClose<cr>", desc = "Close Diffview" },
+      { "<leader>gvc", "<cmd>DiffviewClose<cr>", desc = "Close Diffview" },
       {
-        "<leader>dh",
+        "<leader>gvh",
         function()
           local path
           -- If a Diffview is open, use the file under the cursor (panel or diff window).
@@ -64,10 +64,10 @@ return {
         end,
         desc = "File History (current/selected file)",
       },
-      { "<leader>dH", "<cmd>DiffviewFileHistory<cr>", desc = "File History (repo)" },
-      { "<leader>df", "<cmd>DiffviewToggleFiles<cr>", desc = "Toggle Files panel" },
-      { "<leader>dF", "<cmd>DiffviewFocusFiles<cr>", desc = "Focus Files panel" },
-      { "<leader>dr", "<cmd>DiffviewRefresh<cr>", desc = "Refresh Diffview" },
+      { "<leader>gvH", "<cmd>DiffviewFileHistory<cr>", desc = "File History (repo)" },
+      { "<leader>gvf", "<cmd>DiffviewToggleFiles<cr>", desc = "Toggle Files panel" },
+      { "<leader>gvF", "<cmd>DiffviewFocusFiles<cr>", desc = "Focus Files panel" },
+      { "<leader>gvr", "<cmd>DiffviewRefresh<cr>", desc = "Refresh Diffview" },
       -- Toggle source highlighting (Treesitter + render-markdown) in the current buffer,
       -- so diff colours stand out without the syntax noise.
       {
@@ -91,7 +91,7 @@ return {
       },
       -- Diff this branch vs the repo's default branch merge-base (PR review).
       {
-        "<leader>dm",
+        "<leader>gvm",
         function()
           -- Prefer origin/HEAD; fall back to a local main/master.
           local base = vim.fn.systemlist("git symbolic-ref --short refs/remotes/origin/HEAD")[1]
@@ -115,12 +115,12 @@ return {
     },
   },
 
-  -- Rename the <leader>d which-key group (was "debug")
+  -- Name the <leader>gv which-key group (Diffview lives under git)
   {
     "folke/which-key.nvim",
     opts = {
       spec = {
-        { "<leader>d", group = "diffview" },
+        { "<leader>gv", group = "diffview" },
       },
     },
   },
